@@ -1,8 +1,5 @@
-Here's a sample `README.md` for your GitHub repository, customized for your React project using Vite, Redux, Tailwind CSS, Ant Design (AntD), and your folder structure:
 
----
-
-# Fu E-Com
+# One Store
 
 A modern e-commerce application built with React, Vite, Redux, Tailwind CSS, and Ant Design. This project serves as a fully functional online store with a focus on responsive design and optimized performance.
 
@@ -18,7 +15,7 @@ A modern e-commerce application built with React, Vite, Redux, Tailwind CSS, and
 ## Live Demo
 
 You can view the live demo of the app here:  
-[Fu E-Com Live Demo](https://fu-e-com.vercel.app/)
+[Fu E-Com Live Demo](https://one-store-ten.vercel.app/)
 
 ## Folder Structure
 
@@ -31,8 +28,9 @@ You can view the live demo of the app here:
 ├── src/               # Main source files
 ├── tailwind.config.js # Tailwind configuration
 ├── vite.config.js     # Vite configuration
-├── package.json       # Project dependencies and scripts
 ├── .gitignore         # Git ignore file
+├── .env.example       # Example environment variables file
+├── package.json       # Project dependencies and scripts
 └── README.md          # Project README (this file)
 ```
 
@@ -47,15 +45,22 @@ You can view the live demo of the app here:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/fu-e-com.git
+   git clone https://github.com/mdmominul-310/one-store-frontend.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd fu-e-com
+   cd one-store-frontend
    ```
 
-3. Install dependencies:
+3. Set up the environment variables:
+   - Copy the `.env.example` file and rename it to `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Open the `.env` file and set the appropriate values for your environment variables. These could include API URLs, authentication tokens, or other configuration parameters used by the app.
+
+4. Install dependencies:
    Using npm:
    ```bash
    npm install
@@ -65,7 +70,7 @@ You can view the live demo of the app here:
    yarn install
    ```
 
-4. Run the development server:
+5. Run the development server:
    Using npm:
    ```bash
    npm run dev
@@ -75,7 +80,7 @@ You can view the live demo of the app here:
    yarn dev
    ```
 
-5. Open your browser and navigate to `http://localhost:3000` to view the app.
+6. Open your browser and navigate to `http://localhost:5173/` to view the app.
 
 ## Technologies Used
 
@@ -122,4 +127,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Make sure to replace any placeholders like `yourusername` with the appropriate information.
