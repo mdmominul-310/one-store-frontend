@@ -1,6 +1,12 @@
-const ProductSkeletons = () => {
+const ProductSkeletons = ({ xl = 4 }) => {
   return (
-    <div className="grid grid-cols-4 my-4 container gap-3">
+    <div
+      className={`grid grid-cols-1 md:grid-cols-2 ${
+        xl === 4
+          ? "lg:grid-cols-3 xl:grid-cols-4"
+          : "lg:grid-cols-2 xl:grid-cols-3"
+      } my-4 container gap-3 `}
+    >
       {Array(16)
         .fill(0)
         .map((_, index) => (
