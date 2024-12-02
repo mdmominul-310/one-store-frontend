@@ -6,46 +6,65 @@ import Cart from "@/pages/cart";
 import CheckoutPage from "@/pages/checkout-page";
 import OrderSuccessPage from "@/pages/order-success-page";
 import Home from "@/pages/home";
-
+import DashboardLayout from "@/layouts/DashboardLayout/DashboardLayout";
+import Orders from "@/pages/orders";
+import Wishlist from "@/pages/wishlist";
 
 export const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <DefaultLayout />,
-        children: [
-            {
-                path: '/',
-                element: <Home />
-            },
-            {
-                path: '/search',
-                element: <ProductCategory />
-            },
-            {
-                path: '/products/:slug',
-                element: <ProductViewLayout />
-            },
-            {
-                path: '/categories/:slug',
-                element: <ProductCategory />
-            },
-            {
-                path: '/all-products',
-                element: <ProductCategory />
-            },
-            {
-                path: '/cart',
-                element: <Cart />
-            },
-            {
-                path: '/checkout',
-                element: <CheckoutPage />
-            },
-            {
-                path: '/order-success',
-                element: <OrderSuccessPage />
-            }
-        ]
-
-    }
-])
+  {
+    path: "/",
+    element: <DefaultLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/search",
+        element: <ProductCategory />,
+      },
+      {
+        path: "/products/:slug",
+        element: <ProductViewLayout />,
+      },
+      {
+        path: "/categories/:slug",
+        element: <ProductCategory />,
+      },
+      {
+        path: "/all-products",
+        element: <ProductCategory />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
+        path: "/checkout",
+        element: <CheckoutPage />,
+      },
+      {
+        path: "/order-success",
+        element: <OrderSuccessPage />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <Orders />,
+      },
+      {
+        path: "/dashboard/orders",
+        element: <Orders />,
+      },
+      {
+        path: "/dashboard/wishlist",
+        element: <Wishlist />,
+      },
+    ],
+  },
+]);

@@ -1,26 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    userInfo: null,
+  userInfo: null,
 };
 
 const userInfoSlice = createSlice({
-    name: "userInfo",
-    initialState,
-    reducers: {
-        addUser: (state, action) => {
-            state.userInfo = action.payload;
-
-        },
+  name: "userInfo",
+  initialState,
+  reducers: {
+    addUser: (state, action) => {
+      state.userInfo = action.payload;
     },
-    selectors: {
-        getUser: state => state?.userInfo,
-    },
-    extraReducers: builder => {
-        builder.addCase("user/logout", state => {
-            state.userInfo = null;
-        });
-    },
+  },
+  selectors: {
+    getUser: (state) => state?.userInfo,
+  },
+  extraReducers: (builder) => {
+    builder.addCase("user/logout", (state) => {
+      state.userInfo = null;
+    });
+  },
 });
 
 export default userInfoSlice.reducer;

@@ -8,24 +8,21 @@ import ProductSkeletons from "../ui/skeletons/product-skeletons";
 // import MyGallery from "./product-image-gellery";
 
 function CustomPaging() {
+  const slug = useParams().slug;
+  const { data, isLoading } = useGetProductBySlugQuery(slug);
 
-    const slug = useParams().slug;
-    const { data, isLoading } = useGetProductBySlugQuery(slug);
-
-    if (isLoading) return <ProductSkeletons />;
-    return (
-        <div>
-            <ProductViewCard product={data?.data} />
-            <div className="my-10">
-                <ProductSpecifications product={data?.data} />
-            </div>
-            <div>
-                <RelatedProducts />
-            </div>
-        </div>
-    );
+  if (isLoading) return <ProductSkeletons />;
+  return (
+    <div>
+      <ProductViewCard product={data?.data} />
+      <div className="my-10">
+        <ProductSpecifications product={data?.data} />
+      </div>
+      <div>
+        <RelatedProducts />
+      </div>
+    </div>
+  );
 }
 
 export default CustomPaging;
-
-

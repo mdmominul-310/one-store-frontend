@@ -1,22 +1,21 @@
 import { createAppSlice } from "../app/createAppSlice";
 
 const initialState = {
-    theme: "light",
-}
+  theme: "light",
+};
 
 const themeSlice = createAppSlice({
-    name: "theme",
-    initialState,
-    reducers: {
-        setTheme: (state, action) => {
-            state.theme = action.payload;
-        },
+  name: "theme",
+  initialState,
+  reducers: {
+    setTheme: (state, action) => {
+      state.theme = action.payload;
     },
-    selectors: {
-        getTheme: state => state?.theme,
-    },
+  },
+  selectors: {
+    getTheme: (state) => state?.theme,
+  },
 });
-
 
 export default themeSlice.reducer;
 

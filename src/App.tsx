@@ -1,11 +1,8 @@
-import {
-  RouterProvider,
-} from "react-router-dom";
-import { router } from './routers/MainRouter';
-import ReactPixel from 'react-facebook-pixel';
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routers/MainRouter";
+import ReactPixel from "react-facebook-pixel";
 import { useGetConfigQuery } from "./store/services/configApislice";
 import { useEffect } from "react";
-
 
 function App() {
   const { data, isError, isLoading } = useGetConfigQuery({});
@@ -16,15 +13,13 @@ function App() {
         ReactPixel.pageView(); // For tracking page view
       }
     }
-  }
-    , [data, isError, isLoading])
+  }, [data, isError, isLoading]);
 
   return (
     <>
       <RouterProvider router={router} />
-
     </>
-  )
+  );
 }
 
-export default App
+export default App;

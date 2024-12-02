@@ -1,44 +1,41 @@
-
 export type IAttribute = {
-    name: string;
-    enable?: boolean;
-    values: Array<{ label: string; title: string }>;
-}
+  name: string;
+  enable?: boolean;
+  values: Array<{ label: string; title: string }>;
+};
 
 export interface IProducts {
-    _id?: string;
-    id?: string;
+  _id?: string;
+  id?: string;
+  title: string;
+  description: string;
+
+  images: string[];
+  categories: {
     title: string;
-    description: string;
-
-    images: string[];
-    categories: {
-        title: string;
-        label: string;
-    }[]
-    tags: {
-        title: string;
-        label: string;
-    }[],
+    label: string;
+  }[];
+  tags: {
+    title: string;
+    label: string;
+  }[];
+  sku: string;
+  stock: {
+    variant: string;
+    quantity: string;
+    salePrice: string;
+    regularPrice: string;
     sku: string;
-    stock: {
-        variant: string,
-        quantity: string
-        salePrice: string,
-        regularPrice: string
-        sku: string
-    }[],
-    attributes: IAttribute[];
-    isFeatured: boolean;
-    slug: string;
-    size: {
-        title: string;
-        label: string;
-    }[]
-    colors: {
-        title: string;
-        label: string;
-    }[]
+  }[];
+  attributes: IAttribute[];
+  isFeatured: boolean;
+  slug: string;
+  size: {
+    title: string;
+    label: string;
+  }[];
+  colors: {
+    title: string;
+    label: string;
+  }[];
 }
-
-
