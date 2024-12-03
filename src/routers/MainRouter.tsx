@@ -9,6 +9,9 @@ import Home from "@/pages/home";
 import DashboardLayout from "@/layouts/DashboardLayout/DashboardLayout";
 import Orders from "@/pages/orders";
 import Wishlist from "@/pages/wishlist";
+import PaymentMethods from "@/pages/payment-methods";
+import Address from "@/pages/addresses";
+import Profile from "@/pages/profile";
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +67,18 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/wishlist",
         element: <Wishlist />,
+      },
+      {
+        path: "/dashboard/address",
+        element: <Address />,
+      },
+      {
+        path: "/dashboard/payment-methods",
+        element: <PaymentMethods />,
+      },
+      {
+        path: "/dashboard/profile",
+        element: <Profile />,
       },
     ],
   },
