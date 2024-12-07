@@ -25,4 +25,12 @@ export const baseApi = createApi({
   endpoints: () => ({}),
 });
 
+export const authApi = createApi({
+  reducerPath: "authApi",
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_SERVER_AUTH_URI }),
+
+  tagTypes: ["AUTH"],
+  endpoints: () => ({}),
+});
+
 export default baseApi;

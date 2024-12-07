@@ -12,6 +12,8 @@ import Wishlist from "@/pages/wishlist";
 import PaymentMethods from "@/pages/payment-methods";
 import Address from "@/pages/addresses";
 import Profile from "@/pages/profile";
+import Login from "@/pages/login";
+import Register from "@/pages/register";
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +51,14 @@ export const router = createBrowserRouter([
       {
         path: "/order-success",
         element: <OrderSuccessPage />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
   },

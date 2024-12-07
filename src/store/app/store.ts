@@ -1,7 +1,7 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import baseApi from "../api/baseApi";
+import baseApi, { authApi } from "../api/baseApi";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import userReducer from "../features/userSlice";
@@ -25,6 +25,7 @@ const persistedReducer = persistReducer(persistConfig, rootPersistReducer);
 const rootReducer = combineReducers({
   local: persistedReducer,
   [baseApi.reducerPath]: baseApi.reducer,
+  [authApi.reducerPath]: authApi.reducer,
 });
 
 // Infer the `RootState` type from the root reducer
@@ -42,7 +43,7 @@ export const makeStore = (preloadedState?: any) => {
     middleware: (getDefaultMiddleware) => {
       return getDefaultMiddleware({
         serializableCheck: { ignoreActions: true },
-      }).concat(baseApi.middleware);
+      }).concat(baseApi.middleware, authApi.middleware);
     },
     preloadedState,
   });

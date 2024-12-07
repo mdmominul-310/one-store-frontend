@@ -3,6 +3,7 @@ import { router } from "./routers/MainRouter";
 import ReactPixel from "react-facebook-pixel";
 import { useGetConfigQuery } from "./store/services/configApislice";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const { data, isError, isLoading } = useGetConfigQuery({});
@@ -18,6 +19,7 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
+      <Toaster />
     </>
   );
 }
