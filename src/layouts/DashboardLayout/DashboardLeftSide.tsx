@@ -28,12 +28,12 @@ const DashboardLeftSide = () => {
       items: [
         {
           label: "profile info",
-          href: "/dashboard/profile-info",
+          href: "/dashboard/profile",
           icon: <FaRegUser />,
         },
         {
           label: "addresses",
-          href: "/dashboard/addresses",
+          href: "/dashboard/address",
           icon: <IoLocationOutline />,
         },
         {
