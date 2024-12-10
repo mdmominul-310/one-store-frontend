@@ -10,16 +10,38 @@ import { useGetProductsQuery } from "@/store/services/productsApiSlice";
 import { IProducts } from "@/interfaces/products.interfaces";
 import { useGetMenuQuery } from "@/store/services/menuApiSlice";
 import { PiPhone, PiShoppingCart } from "react-icons/pi";
+import { LuLogIn } from "react-icons/lu";
+import { useAppSelector } from "@/store/app/hooks";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "@/store/features/userSlice";
 
 const NavigationBar = () => {
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
-  const { totalItems, totalPrice } = useCart();
+  const { totalItems } = useCart();
   const [, setSearchParams] = useSearchParams();
   const searchParams = new URLSearchParams({ search: search });
   const { data } = useGetProductsQuery(searchParams.toString());
   const navigate = useNavigate();
   const modalRef = useRef<HTMLDivElement>(null);
   const { data: menuData, isLoading } = useGetMenuQuery({});
+
+  const { token, user } = useAppSelector(
+    (state) => state?.local?.userReducer?.userInfo
+  );
+
+  let decodedToken;
+  if (token) {
+    decodedToken = jwtDecode(token as string);
+  }
+
+  const currentTime = Math.floor(Date.now() / 1000);
+  let isTimeExpired = true;
+  if (decodedToken?.exp) {
+    isTimeExpired = currentTime > decodedToken?.exp;
+  }
 
   const handleNavigate = (slug: string) => {
     navigate(`/products/${slug}`);
@@ -116,32 +138,86 @@ const NavigationBar = () => {
           </div>
         </div>
         <div className="col-span-4 flex justify-end text-sm font-semibold text-slate-700 gap-3 items-center ">
-          <Link to={"/cart"}>
-            <div className="flex gap-x-4 items-center py-4 justify-end ">
-              <div className="flex items-center gap-2">
-                <span>
-                  <PiPhone className="text-3xl " />
-                </span>
-                {/* <div>
+          <div className="flex gap-x-4 items-center py-4 justify-end ">
+            <div className="flex items-center gap-2">
+              <span>
+                <PiPhone className="text-3xl " />
+              </span>
+              {/* <div>
                                     <p className='text-sm font-semibold text-green-700'>24/7 support</p>
                                     <p className='text-sm font-semibold text-slate-700'>+880 1712454900</p>
                                 </div> */}
-              </div>
-              <div>
-                <span className="flex gap-2 items-center">
-                  <PiShoppingCart className="text-3xl " />
-                  <div>
+            </div>
+            <Link to={"/cart"}>
+              <div className="flex gap-2 items-center relative">
+                <PiShoppingCart className="text-3xl " />
+                {/* <div>
                     <p className="text-sm font-semibold text-green-700">
                       ৳{totalPrice}
                     </p>
                     <p className="text-sm font-semibold text-slate-700">
                       {totalItems} items
                     </p>
-                  </div>
-                </span>
+                  </div> */}
+                <div className="text-sm font-semibold  absolute bg-red-500 text-white size-5 rounded-full -right-2 -top-2">
+                  <p>{totalItems}</p>
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+            {isTimeExpired ? (
+              <Link to={"/login"} className="flex items-center gap-2">
+                <LuLogIn className="text-3xl " />
+              </Link>
+            ) : (
+              <div className="relative">
+                <div
+                  onClick={() => setShowProfileMenu(!showProfileMenu)}
+                  className="flex items-center gap-2 size-[30px] rounded-full border p-1 cursor-pointer"
+                >
+                  <img
+                    src={user?.profileImage}
+                    alt=""
+                    className="size-[30px] rounded-full object-cover "
+                  />
+                </div>
+                {showProfileMenu ? (
+                  <div className="absolute right-0 top-11 border bg-white w-48 p-2 rounded-sm">
+                    <div
+                      onClick={() => setShowProfileMenu(!showProfileMenu)}
+                      className="grid grid-cols-1 gap-1"
+                    >
+                      <Link
+                        to={"/dashboard/profile"}
+                        className="py-1 hover:text-red-500"
+                      >
+                        <div>Profile</div>
+                      </Link>
+                      <Link
+                        to={"/dashboard/orders"}
+                        className="py-1 hover:text-red-500"
+                      >
+                        <div>Orders</div>
+                      </Link>
+                      <Link
+                        to={"/dashboard/wishlist"}
+                        className="py-1 hover:text-red-500"
+                      >
+                        <div>Wishlist</div>
+                      </Link>
+                      <button
+                        onClick={() => dispatch(logoutUser())}
+                        className=" py-1 text-white rounded-sm w-full bg-red-500"
+                      >
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

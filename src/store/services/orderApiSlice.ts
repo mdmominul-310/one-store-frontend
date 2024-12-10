@@ -1,9 +1,13 @@
-import baseApi from "../api/baseApi";
+import { authApi } from "../api/baseApi";
 
-const order = baseApi.injectEndpoints({
+const order = authApi.injectEndpoints({
   endpoints: (builder) => ({
     getOrders: builder.query({
       query: () => `/orders`,
+      providesTags: ["order"],
+    }),
+    getUserOrders: builder.query({
+      query: ({id}) => `/orders?user=${id}`,
       providesTags: ["order"],
     }),
     getSingleOrder: builder.query({
@@ -37,6 +41,7 @@ const order = baseApi.injectEndpoints({
 
 export const {
   useGetOrdersQuery,
+  useGetUserOrdersQuery,
   useAddOrderMutation,
   useDeleteOrderMutation,
   useGetSingleOrderQuery,

@@ -1,11 +1,12 @@
+import { useAppSelector } from "@/store/app/hooks";
 import { FaRegHeart } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
 import { LiaShoppingBagSolid } from "react-icons/lia";
-import { MdPayment } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 
 const DashboardLeftSide = () => {
+  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
   const { pathname } = useLocation();
   const menus = [
     {
@@ -23,7 +24,9 @@ const DashboardLeftSide = () => {
         },
       ],
     },
-    {
+  ];
+  if (user?.email) {
+    menus.push({
       title: "Account Settings",
       items: [
         {
@@ -36,14 +39,9 @@ const DashboardLeftSide = () => {
           href: "/dashboard/address",
           icon: <IoLocationOutline />,
         },
-        {
-          label: "payment methods",
-          href: "/dashboard/payment-methods",
-          icon: <MdPayment />,
-        },
       ],
-    },
-  ];
+    });
+  }
   return (
     <div className="grid grid-cols-1 gap-7 py-5 shadow rounded-md">
       {menus.map((menu, index) => (

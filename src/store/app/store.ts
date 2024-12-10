@@ -6,6 +6,7 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import userReducer from "../features/userSlice";
 import cartReducer from "../features/cartSlice";
+import wishlistReducer from "../features/wishListSlice";
 import themeSlice from "../features/themeSlice";
 
 // persi
@@ -17,6 +18,7 @@ const persistConfig = {
 const rootPersistReducer = combineReducers({
   userReducer,
   cartReducer,
+  wishlistReducer,
   theme: themeSlice,
 });
 const persistedReducer = persistReducer(persistConfig, rootPersistReducer);
