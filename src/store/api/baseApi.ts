@@ -29,7 +29,22 @@ export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_SERVER_AUTH_URI }),
 
-  tagTypes: ["AUTH"],
+ tagTypes: [
+    "User",
+    "Category",
+    "color",
+    "size",
+    "product",
+    "order",
+    "banner",
+    "cart",
+    "Promotion",
+    "Menu",
+    "user",
+    "Config",
+    "Auth",
+    "wishlist"
+  ],
   endpoints: () => ({}),
 });
 

@@ -1,15 +1,16 @@
 import EditProfile from "@/components/profile/EditProfile";
+import { useAppSelector } from "@/store/app/hooks";
 import { useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 
 const Profile = () => {
   const [isEditable, setIsEditable] = useState(false);
+  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
   const details = [
-    { label: "first name", value: "Nick" },
-    { label: "last name", value: "DuBuque" },
-    { label: "email", value: "nicky.du@example.com" },
-    { label: "phone", value: "+1 123-456-7890" },
-    { label: "birth date", value: "25 Apr, 1996" },
+    { label: "first name", value: user.firstName },
+    { label: "last name", value: user.lastName },
+    { label: "email", value: user.email },
+    { label: "phone", value: user.phone },
   ];
   return (
     <div>
@@ -41,12 +42,14 @@ const Profile = () => {
                   <div className="bg-gray-300 rounded-md size-[60px]">
                     <img
                       className="size-[60px] rounded-full"
-                      src="https://template.getbazaar.io/_next/image?url=%2Fassets%2Fimages%2Ffaces%2Fralph.png&w=1920&q=75"
+                      src={user.profileImage}
                       alt=""
                     />
                   </div>
                   <div>
-                    <h4>Nick DuBuque</h4>
+                    <h4>
+                      {user.firstName} {user.lastName}
+                    </h4>
                     <p className="text-sm text-[#7d879c]">
                       Balance: <span className="text-red-500">$5,000.00</span>
                     </p>

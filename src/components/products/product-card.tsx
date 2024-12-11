@@ -3,29 +3,64 @@ import { Modal } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductViewCard from "./product-view-card";
+import { FaCartArrowDown, FaEye, FaHeart } from "react-icons/fa";
+import useCart from "@/hooks/useCart";
+import { useAppSelector } from "@/store/app/hooks";
+import { useAddWishlistMutation } from "@/store/services/wishlistApiService";
+import toast from "react-hot-toast";
+import { ICarts } from "@/interfaces/carts.interface";
+import { useDispatch } from "react-redux";
+import { addWishList } from "@/store/features/wishListSlice";
 
 const ProductCard = ({ products }: { products: IProducts }) => {
+  const [addToWishList] = useAddWishlistMutation();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
+
   const navigaton = useNavigate();
-  // const { isExist } = useCart();
-  // const dispatch = useDispatch();
+  const { isExist } = useCart();
+  const dispatch = useDispatch();
   const handleproduct = () => {
     navigaton(`/products/${products?.slug}`);
     window.scrollTo(0, 0);
   };
   // const handleAddToCart = () => {
-  //     const cartInfo: ICarts = {
-  //         id: products?._id as string,
-  //         title: products?.title,
-  //         price: parseInt(products?.stock?.[0]?.salePrice) as number,
-  //         image: products?.images?.[0],
-  //         qty: 1,
-  //         regularPrice: parseInt(products?.stock?.[0]?.regularPrice) as number,
-  //         selected: true
-  //     }
-  //     dispatch(addCart(cartInfo));
-  // }
-  // const isCart = isExist(products?._id as string);
+  //   const cartInfo: ICarts = {
+  //     id: products?._id as string,
+  //     title: products?.title,
+  //     price: parseInt(products?.stock?.[0]?.salePrice) as number,
+  //     image: products?.images?.[0],
+  //     qty: 1,
+  //     regularPrice: parseInt(products?.stock?.[0]?.regularPrice) as number,
+  //     selected: true,
+  //   };
+  //   dispatch(addCart(cartInfo));
+  // };
+  const isCart = isExist(products?._id as string);
+
+  const handleAddToWishList = async () => {
+    if (user?.email) {
+      const data = { product: products?.id, user: user.id };
+      const result = await addToWishList(data);
+      if (result?.data?.success) {
+        toast.success(result?.data?.message);
+      } else {
+        toast.error("Failed to add");
+      }
+    } else {
+      const wishlistInfo: ICarts = {
+        id: products?._id as string,
+        title: products?.title,
+        price: parseInt(products?.stock?.[0]?.salePrice) as number,
+        image: products?.images?.[0],
+        qty: 1,
+        regularPrice: parseInt(products?.stock?.[0]?.regularPrice) as number,
+        selected: true,
+      };
+      dispatch(addWishList(wishlistInfo));
+      toast.success("Added to wishlist");
+    }
+  };
 
   return (
     <>
@@ -62,23 +97,32 @@ const ProductCard = ({ products }: { products: IProducts }) => {
             %
           </div>
         </div>
-        {/* <div className="bg-primary absolute top-4 hidden group-hover:block right-2 p-2 rounded">
-                    
-                    <button
-                        className="mt-2 bg-primary text-white font-semibold py-2 rounded text-2xl block "
-                        onClick={() => setIsModalVisible(true)}
-                    >
-                        <FaCartArrowDown className="hover:text-secondary"
-                            style={{ color: isCart ? 'green' : 'white', transition: 'all 0.3s ease' }}
-                        />
-                    </button>
-                    <button className="mt-2 bg-primary text-white font-semibold py-2 rounded text-2xl block" onClick={() => setIsModalVisible(true)}
-                    ><FaHeart className="hover:text-secondary" /></button>
-                    <button className="mt-2 bg-primary text-white font-semibold py-2 rounded text-2xl block"
-                        onClick={() => setIsModalVisible(true)}
-                    ><FaEye className="hover:text-secondary" /></button>
-
-                </div> */}
+        <div className="bg-primary absolute top-4 hidden group-hover:block right-2 p-2 rounded">
+          <button
+            className="mt-2 bg-primary text-white font-semibold py-2 rounded text-2xl block "
+            onClick={() => setIsModalVisible(true)}
+          >
+            <FaCartArrowDown
+              className="hover:text-secondary"
+              style={{
+                color: isCart ? "green" : "white",
+                transition: "all 0.3s ease",
+              }}
+            />
+          </button>
+          <button
+            className="mt-2 bg-primary text-white font-semibold py-2 rounded text-2xl block"
+            onClick={() => handleAddToWishList()}
+          >
+            <FaHeart className="hover:text-secondary" />
+          </button>
+          <button
+            className="mt-2 bg-primary text-white font-semibold py-2 rounded text-2xl block"
+            onClick={() => setIsModalVisible(true)}
+          >
+            <FaEye className="hover:text-secondary" />
+          </button>
+        </div>
         <div className="py-2 px-2">
           <button
             className="bg-primary w-full font-semibold text-white hover:bg-secondary py-1 rounded"

@@ -1,10 +1,12 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Form, FormProps, Input } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./../App.css";
 import { useCreateUserMutation } from "@/store/services/authApiService";
 import { ImSpinner2 } from "react-icons/im";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { addUser } from "@/store/features/userSlice";
 
 type FieldType = {
   firstName: string;
@@ -16,6 +18,8 @@ type FieldType = {
 
 const Register = () => {
   const [createUser, { isLoading }] = useCreateUserMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     values.phone = "+880" + values.phone;
@@ -23,8 +27,10 @@ const Register = () => {
     const result = await createUser(values);
     if (result?.data?.success) {
       toast.success(result?.data?.message);
+      dispatch(addUser(result?.data?.data));
+      navigate("/");
     } else {
-      toast.error(result?.error?.data?.message);
+      toast.error("Failed to register user");
     }
   };
 

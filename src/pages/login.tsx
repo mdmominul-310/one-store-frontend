@@ -1,8 +1,10 @@
+import { addUser } from "@/store/features/userSlice";
 import { useLoginUserMutation } from "@/store/services/authApiService";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Form, FormProps, Input } from "antd";
 import toast from "react-hot-toast";
 import { ImSpinner2 } from "react-icons/im";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 type FieldType = {
@@ -13,15 +15,16 @@ type FieldType = {
 const Login = () => {
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const result = await loginUser(values);
     if (result?.data?.success) {
-      localStorage.setItem("access_token", result?.data?.data?.token);
+      dispatch(addUser(result?.data?.data))
       toast.success(result?.data?.message);
       navigate("/");
     } else {
-      toast.error(result?.error?.data?.message);
+      toast.error("Failed to login user");
     }
   };
 
@@ -69,7 +72,7 @@ const Login = () => {
             {isLoading ? (
               <ImSpinner2 className="text-xl animate-spin" />
             ) : (
-              "Register"
+              "Login"
             )}
           </button>
           <div className="my-5 text-center">

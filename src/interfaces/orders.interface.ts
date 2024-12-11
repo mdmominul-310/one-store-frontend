@@ -6,7 +6,7 @@ export type ICarts = {
   image: string;
   qty: number;
   selected?: boolean;
-
+  status?: string,
   attributes?: { [key: string]: string }[];
 };
 
