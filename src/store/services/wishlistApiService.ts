@@ -1,6 +1,7 @@
-import { authApi } from "../api/baseApi";
+import baseApi from "../api/baseApi";
 
-const wishlistApiService = authApi.injectEndpoints({
+
+const wishlistApiService = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getWishlist: builder.query({
       query: () => `/wishlist`,

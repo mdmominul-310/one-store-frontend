@@ -1,6 +1,7 @@
-import { authApi } from "../api/baseApi";
+import baseApi from "../api/baseApi";
 
-const authApiService = authApi.injectEndpoints({
+
+const authApiService = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createUser: builder.mutation({
       query: (data) => ({

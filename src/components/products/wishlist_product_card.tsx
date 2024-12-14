@@ -4,11 +4,19 @@ import { ICarts } from "@/interfaces/carts.interface";
 import { useDispatch } from "react-redux";
 import { addCart, removeCart } from "@/store/features/cartSlice";
 import { removeWishList } from "@/store/features/wishListSlice";
+import { useAppSelector } from "@/store/app/hooks";
+import { useDeleteWishlistMutation } from "@/store/services/wishlistApiService";
+import UseCustomToast from "@/hooks/UseCustomToast";
 
 const WishlistProductCard = ({ products }: { products: ICarts }) => {
   const dispatch = useDispatch();
+  const wishlistProducts = useAppSelector(
+    (state) => state.local.wishlistReducer.wishListInfo
+  );
+  const [removeProduct] = useDeleteWishlistMutation();
 
   const { isExist } = useCart();
+
   const isCart = isExist(products?.id as string);
 
   const handleAddToCart = () => {
@@ -28,7 +36,7 @@ const WishlistProductCard = ({ products }: { products: ICarts }) => {
     }
   };
 
-  const handleRemoveFromWishlist = () => {
+  const handleRemoveFromWishlist = async () => {
     const productInfo: ICarts = {
       id: products.id,
       title: products?.title,
@@ -38,8 +46,13 @@ const WishlistProductCard = ({ products }: { products: ICarts }) => {
       regularPrice: products.regularPrice,
       selected: true,
     };
-
-    dispatch(removeWishList(productInfo));
+    const isExist = wishlistProducts.find((prod) => prod.id == products.id);
+    if (isExist) {
+      dispatch(removeWishList(productInfo));
+    } else {
+      console.log(products);
+      UseCustomToast(removeProduct(products.id), "product removing");
+    }
   };
 
   return (

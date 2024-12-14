@@ -1,6 +1,7 @@
-import { authApi } from "../api/baseApi";
+import baseApi from "../api/baseApi";
 
-const order = authApi.injectEndpoints({
+
+const order = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getOrders: builder.query({
       query: () => `/orders`,

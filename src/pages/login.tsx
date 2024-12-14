@@ -15,12 +15,12 @@ type FieldType = {
 const Login = () => {
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const result = await loginUser(values);
     if (result?.data?.success) {
-      dispatch(addUser(result?.data?.data))
+      dispatch(addUser(result?.data?.data));
       toast.success(result?.data?.message);
       navigate("/");
     } else {
