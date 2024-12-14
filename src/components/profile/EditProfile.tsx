@@ -1,7 +1,14 @@
+import UseCustomToast from "@/hooks/UseCustomToast";
+import { UserUpdateSuccessResponse } from "@/interfaces/api-response.interface";
 import { IProfile } from "@/interfaces/profile.interface";
+import { useAppSelector } from "@/store/app/hooks";
+import { updateUser } from "@/store/features/userSlice";
+
+import { useUpdateUserMutation } from "@/store/services/authApiService";
 import type { FormProps } from "antd";
 import { Form, Input } from "antd";
 import { FaUser } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 
 type FieldType = {
   firstName: string;
@@ -12,6 +19,9 @@ type FieldType = {
 };
 
 const EditProfile = () => {
+  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
+  const dispatch = useDispatch();
+  const [updateProfile] = useUpdateUserMutation();
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const profileInfo: IProfile = {
       firstName: values.firstName as string,
@@ -19,10 +29,40 @@ const EditProfile = () => {
       email: values.email as string,
       phoneNumber: values.phoneNumber as string,
       dateOfBirth: values.dateOfBirth as string,
-      profileImage: "",
     };
-
-    console.log({ profileInfo });
+    UseCustomToast(updateProfile(profileInfo), "Updating Profile").then(
+      (result: UserUpdateSuccessResponse) => {
+        if (result.data) {
+          const {
+            _id,
+            firstName,
+            lastName,
+            phone,
+            phoneNumberVerified,
+            email,
+            emailVerified,
+            profileImage,
+            role,
+            status,
+            id,
+          } = result?.data?.data || {};
+          const userData = {
+            _id,
+            firstName,
+            lastName,
+            phone,
+            phoneNumberVerified,
+            email,
+            emailVerified,
+            profileImage,
+            role,
+            status,
+            id,
+          };
+          dispatch(updateUser(userData));
+        }
+      }
+    );
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
@@ -30,12 +70,12 @@ const EditProfile = () => {
   ) => {
     console.log("Failed:", errorInfo);
   };
-
+  
   return (
     <div>
       <div className="py-3">
         <div className="size-16 border rounded-full flex justify-center items-center text-3xl bg-slate-100 text-slate-500">
-            <FaUser/>
+          <FaUser />
         </div>
       </div>
 
@@ -44,7 +84,13 @@ const EditProfile = () => {
         labelCol={{ span: 8 }}
         // wrapperCol={{ span: 16 }}
         // style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
+        initialValues={{
+          remember: true,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          phoneNumber: user.phone,
+        }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -93,6 +139,7 @@ const EditProfile = () => {
               className="w-full h-11"
               placeholder="example@gmail.com"
               type="email"
+              readOnly
             />
           </Form.Item>
           <Form.Item<FieldType>
@@ -101,7 +148,6 @@ const EditProfile = () => {
             className="w-full mb-0"
             rules={[
               {
-                type: "number",
                 message: "Please input phone number",
               },
             ]}
@@ -109,7 +155,7 @@ const EditProfile = () => {
             <Input
               className="w-full h-11"
               placeholder="345234242323"
-              type="number"
+              readOnly
             />
           </Form.Item>
           <Form.Item<FieldType>

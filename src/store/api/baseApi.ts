@@ -21,7 +21,8 @@ export const baseApi = createApi({
     "Menu",
     "user",
     "Config",
-    "wishlist"
+    "wishlist",
+    "Address"
   ],
   endpoints: () => ({}),
 });

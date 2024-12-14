@@ -10,6 +10,13 @@ const authApiService = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    updateUser: builder.mutation({
+      query: (data) => ({
+        url: `/user`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
     loginUser: builder.mutation({
       query: (data) => ({
         url: `/login`,
@@ -20,4 +27,4 @@ const authApiService = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateUserMutation, useLoginUserMutation } = authApiService;
+export const { useCreateUserMutation, useLoginUserMutation, useUpdateUserMutation } = authApiService;
