@@ -5,6 +5,7 @@ import baseApi from "../api/baseApi";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import userReducer from "../features/userSlice";
+import guestOrUserConfirmationReducer from "../features/guestOrUserConfirmationSlice";
 import cartReducer from "../features/cartSlice";
 import wishlistReducer from "../features/wishListSlice";
 import themeSlice from "../features/themeSlice";
@@ -18,6 +19,7 @@ const persistConfig = {
 const rootPersistReducer = combineReducers({
   userReducer,
   cartReducer,
+  guestOrUserConfirmationReducer,
   wishlistReducer,
   theme: themeSlice,
 });

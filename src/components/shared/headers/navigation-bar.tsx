@@ -232,10 +232,10 @@ const NavigationBar = () => {
                   name: string;
                   children: [{ label: string; title: string; _id: string }];
                 }) => (
-                  <>
+                  <div   key={item._id} className="inline">
                     {item.children.length > 0 ? (
                       <DropDown
-                        key={item._id}
+                      
                         label={item.name}
                         items={item?.children?.map((subItem) => ({
                           key: subItem._id,
@@ -254,7 +254,7 @@ const NavigationBar = () => {
                         {item.name}
                       </Link>
                     )}
-                  </>
+                  </div>
                 )
               )}
             </div>

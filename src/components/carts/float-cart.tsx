@@ -36,7 +36,7 @@ const FloatCart = () => {
         // width={500}
         // className='w-[700px]'
         onClose={() => setShowDrawer(false)}
-        visible={showDrawer}
+        open={showDrawer}
       >
         <DrawerCartContent carts={cart} setShowDrawer={setShowDrawer} />
       </Drawer>
