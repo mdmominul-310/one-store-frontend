@@ -29,14 +29,12 @@ const CheckoutPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const navigation = useNavigate();
 
-
-
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const orderInfo: IOrders = {
-      fullName: values.fullName as string,
-      phoneNumber: values.phoneNumber as string,
-      address: values.address as string,
-      deliveryArea: values.deliveryArea as string,
+      fullName: values?.fullName as string,
+      phoneNumber: values?.phoneNumber as string,
+      address: values?.address as string,
+      deliveryArea: values?.deliveryArea as string,
       note: values?.note || ("" as string),
       products: selectedItems,
       total: (totalSelectedPrice + deliveryCharge).toString(),
@@ -71,7 +69,6 @@ const CheckoutPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  
   return (
     <div className="container min-h-screen">
       {contextHolder}
@@ -82,9 +79,11 @@ const CheckoutPage = () => {
         // style={{ maxWidth: 600 }}
         initialValues={{
           remember: true,
-          fullName: `${user.firstName} ${user.lastName}`,
-          email: user.email,
-          phoneNumber: user.phone
+          fullName: user?.firstName
+            ? `${user?.firstName} ${user?.lastName}`
+            : "",
+          email: user?.email ? user?.email : "",
+          phoneNumber: user?.phone ? user?.phone : "",
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
