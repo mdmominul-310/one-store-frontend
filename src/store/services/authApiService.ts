@@ -1,11 +1,19 @@
-import { authApi } from "../api/baseApi";
+import baseApi from "../api/baseApi";
 
-const authApiService = authApi.injectEndpoints({
+
+const authApiService = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createUser: builder.mutation({
       query: (data) => ({
         url: `/user/create`,
         method: "POST",
+        body: data,
+      }),
+    }),
+    updateUser: builder.mutation({
+      query: (data) => ({
+        url: `/user`,
+        method: "PATCH",
         body: data,
       }),
     }),
@@ -19,4 +27,4 @@ const authApiService = authApi.injectEndpoints({
   }),
 });
 
-export const { useCreateUserMutation, useLoginUserMutation } = authApiService;
+export const { useCreateUserMutation, useLoginUserMutation, useUpdateUserMutation } = authApiService;

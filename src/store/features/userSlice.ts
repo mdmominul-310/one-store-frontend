@@ -26,6 +26,9 @@ const userInfoSlice = createSlice({
     addUser: (state, action) => {
       state.userInfo = action.payload;
     },
+    updateUser: (state, action) => {
+      state.userInfo.user = action.payload;
+    },
     logoutUser: (state) => {
       state.userInfo = initialState.userInfo;
     }
@@ -56,5 +59,5 @@ const userInfoSlice = createSlice({
 });
 
 export default userInfoSlice.reducer;
-export const { addUser, logoutUser } = userInfoSlice.actions;
+export const { addUser, logoutUser, updateUser} = userInfoSlice.actions;
 export const { getUser } = userInfoSlice.selectors;

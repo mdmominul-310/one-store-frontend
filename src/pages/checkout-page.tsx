@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactPixel from "react-facebook-pixel";
 import COD from "../assets/cod.png";
+import { useAppSelector } from "@/store/app/hooks";
 
 type FieldType = {
   fullName: string;
@@ -20,12 +21,15 @@ type FieldType = {
 };
 
 const CheckoutPage = () => {
+  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const { selectedItems, totalItems, totalSelectedPrice, clearToCart } =
     useCart();
   const [addOrder, { data, isLoading, isError }] = useAddOrderMutation();
   const [messageApi, contextHolder] = message.useMessage();
   const navigation = useNavigate();
+
+
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const orderInfo: IOrders = {
@@ -66,6 +70,8 @@ const CheckoutPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  
   return (
     <div className="container min-h-screen">
       {contextHolder}
@@ -74,7 +80,12 @@ const CheckoutPage = () => {
         labelCol={{ span: 8 }}
         // wrapperCol={{ span: 16 }}
         // style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
+        initialValues={{
+          remember: true,
+          fullName: `${user.firstName} ${user.lastName}`,
+          email: user.email,
+          phoneNumber: user.phone
+        }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"

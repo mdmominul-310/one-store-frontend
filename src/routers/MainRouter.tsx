@@ -14,6 +14,7 @@ import Address from "@/pages/addresses";
 import Profile from "@/pages/profile";
 import Login from "@/pages/login";
 import Register from "@/pages/register";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -80,15 +81,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/address",
-        element: <Address />,
+        element: (
+          <PrivateRoute>
+            <Address />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard/payment-methods",
-        element: <PaymentMethods />,
+        element: (
+          <PrivateRoute>
+            <PaymentMethods />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard/profile",
-        element: <Profile />,
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
       },
     ],
   },

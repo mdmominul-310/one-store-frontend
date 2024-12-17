@@ -42,13 +42,13 @@ const Profile = () => {
                   <div className="bg-gray-300 rounded-md size-[60px]">
                     <img
                       className="size-[60px] rounded-full"
-                      src={user.profileImage}
+                      src={user?.profileImage}
                       alt=""
                     />
                   </div>
                   <div>
                     <h4>
-                      {user.firstName} {user.lastName}
+                      {user?.firstName} {user?.lastName}
                     </h4>
                     <p className="text-sm text-[#7d879c]">
                       Balance: <span className="text-red-500">$5,000.00</span>
