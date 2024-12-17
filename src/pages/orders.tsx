@@ -1,13 +1,11 @@
+import useAuth from "@/hooks/useAuth";
 import { IOrders } from "@/interfaces/orders.interface";
-import { useAppSelector } from "@/store/app/hooks";
 import { useGetUserOrdersQuery } from "@/store/services/orderApiSlice";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { HiShoppingBag } from "react-icons/hi";
 
 const Orders = () => {
-  const { user } = useAppSelector(
-    (state) => state?.local?.userReducer?.userInfo
-  );
+  const { user } = useAuth();
   const { data } = useGetUserOrdersQuery({ id: user?.id });
   const orders: IOrders = data?.data || [];
 

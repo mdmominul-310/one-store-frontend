@@ -1,7 +1,7 @@
+import useAuth from "@/hooks/useAuth";
 import UseCustomToast from "@/hooks/UseCustomToast";
 import { UserUpdateSuccessResponse } from "@/interfaces/api-response.interface";
 import { IProfile } from "@/interfaces/profile.interface";
-import { useAppSelector } from "@/store/app/hooks";
 import { updateUser } from "@/store/features/userSlice";
 
 import { useUpdateUserMutation } from "@/store/services/authApiService";
@@ -19,7 +19,7 @@ type FieldType = {
 };
 
 const EditProfile = () => {
-  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
+  const { user } = useAuth();
   const dispatch = useDispatch();
   const [updateProfile] = useUpdateUserMutation();
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {

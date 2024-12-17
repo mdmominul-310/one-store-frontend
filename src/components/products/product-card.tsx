@@ -5,17 +5,17 @@ import { useNavigate } from "react-router-dom";
 import ProductViewCard from "./product-view-card";
 import { FaCartArrowDown, FaEye, FaHeart } from "react-icons/fa";
 import useCart from "@/hooks/useCart";
-import { useAppSelector } from "@/store/app/hooks";
 import { useAddWishlistMutation } from "@/store/services/wishlistApiService";
 import toast from "react-hot-toast";
 import { ICarts } from "@/interfaces/carts.interface";
 import { useDispatch } from "react-redux";
 import { addWishList } from "@/store/features/wishListSlice";
+import useAuth from "@/hooks/useAuth";
 
 const ProductCard = ({ products }: { products: IProducts }) => {
   const [addToWishList] = useAddWishlistMutation();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
+  const { user } = useAuth();
 
   const navigaton = useNavigate();
   const { isExist } = useCart();

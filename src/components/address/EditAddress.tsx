@@ -1,6 +1,6 @@
+import useAuth from "@/hooks/useAuth";
 import UseCustomToast from "@/hooks/UseCustomToast";
 import { IAddress } from "@/interfaces/address.interface";
-import { useAppSelector } from "@/store/app/hooks";
 import {
   useAddAddressMutation,
   useUpdateAddressMutation,
@@ -26,7 +26,7 @@ type FieldType = {
 };
 
 const EditAddress: React.FC<{ address: IAddress | null }> = ({ address }) => {
-  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
+  const { user } = useAuth();
   const [addAddress] = useAddAddressMutation();
   const [updateAddress] = useUpdateAddressMutation();
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {

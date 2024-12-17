@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/store/app/hooks";
+import useAuth from "@/hooks/useAuth";
 import { FaRegHeart } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
@@ -6,7 +6,7 @@ import { LiaShoppingBagSolid } from "react-icons/lia";
 import { Link, useLocation } from "react-router-dom";
 
 const DashboardLeftSide = () => {
-  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
+  const { user } = useAuth();
   const { pathname } = useLocation();
   const menus = [
     {

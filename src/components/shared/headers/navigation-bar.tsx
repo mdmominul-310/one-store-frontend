@@ -11,10 +11,10 @@ import { IProducts } from "@/interfaces/products.interfaces";
 import { useGetMenuQuery } from "@/store/services/menuApiSlice";
 import { PiPhone, PiShoppingCart } from "react-icons/pi";
 import { LuLogIn } from "react-icons/lu";
-import { useAppSelector } from "@/store/app/hooks";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "@/store/features/userSlice";
+import useAuth from "@/hooks/useAuth";
 
 const NavigationBar = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -28,9 +28,7 @@ const NavigationBar = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const { data: menuData, isLoading } = useGetMenuQuery({});
 
-  const { token, user } = useAppSelector(
-    (state) => state?.local?.userReducer?.userInfo
-  );
+  const { user, token } = useAuth();
 
   let decodedToken;
   if (token) {
