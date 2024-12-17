@@ -1,11 +1,12 @@
 import WishlistProductCard from "@/components/products/wishlist_product_card";
+import useAuth from "@/hooks/useAuth";
 import { ICarts } from "@/interfaces/carts.interface";
 import { IProducts } from "@/interfaces/products.interfaces";
 import { useAppSelector } from "@/store/app/hooks";
 import { useGetUserWishlistQuery } from "@/store/services/wishlistApiService";
 
 const Wishlist = () => {
-  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
+  const { user } = useAuth();
   const products = useAppSelector(
     (state) => state.local.wishlistReducer.wishListInfo
   );

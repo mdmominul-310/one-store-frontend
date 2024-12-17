@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactPixel from "react-facebook-pixel";
 import COD from "../assets/cod.png";
-import { useAppSelector } from "@/store/app/hooks";
+import useAuth from "@/hooks/useAuth";
 
 type FieldType = {
   fullName: string;
@@ -21,7 +21,7 @@ type FieldType = {
 };
 
 const CheckoutPage = () => {
-  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
+  const { user } = useAuth();
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const { selectedItems, totalItems, totalSelectedPrice, clearToCart } =
     useCart();

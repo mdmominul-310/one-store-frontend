@@ -1,7 +1,7 @@
-import React, { ReactNode } from "react";
-import { useAppSelector } from "@/store/app/hooks";
+import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import useAuth from "@/hooks/useAuth";
 
 interface PrivateRouterProps {
   children: ReactNode;
@@ -22,9 +22,7 @@ const isTokenExpired = (token: string): boolean => {
 };
 
 const PrivateRoute = ({ children }: PrivateRouterProps) => {
-  const { token } = useAppSelector(
-    (state) => state?.local?.userReducer?.userInfo
-  );
+  const { token } = useAuth();
   const location = useLocation();
 
   if (!token || isTokenExpired(token)) {

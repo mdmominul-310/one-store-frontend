@@ -1,11 +1,11 @@
 import EditProfile from "@/components/profile/EditProfile";
-import { useAppSelector } from "@/store/app/hooks";
+import useAuth from "@/hooks/useAuth";
 import { useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 
 const Profile = () => {
   const [isEditable, setIsEditable] = useState(false);
-  const { user } = useAppSelector((state) => state.local.userReducer.userInfo);
+  const { user } = useAuth();
   const details = [
     { label: "first name", value: user.firstName },
     { label: "last name", value: user.lastName },
