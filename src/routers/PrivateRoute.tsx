@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { useAppSelector } from "@/store/app/hooks";
 import { Navigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
