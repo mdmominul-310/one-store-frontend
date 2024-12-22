@@ -1,11 +1,16 @@
 import EditProfile from "@/components/profile/EditProfile";
 import useAuth from "@/hooks/useAuth";
+import { IOrders } from "@/interfaces/orders.interface";
+import { useGetUserOrdersQuery } from "@/store/services/orderApiSlice";
 import { useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 
 const Profile = () => {
   const [isEditable, setIsEditable] = useState(false);
   const { user } = useAuth();
+
+  const { data } = useGetUserOrdersQuery({ id: user?.id });
+  const orders: IOrders[] = data?.data || [];
   const details = [
     { label: "first name", value: user.firstName },
     { label: "last name", value: user.lastName },
@@ -36,8 +41,8 @@ const Profile = () => {
         ) : (
           <>
             {" "}
-            <div className="my-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-5">
-              <div className="shadow px-4 py-2 flex items-center justify-between">
+            <div className="my-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-3 gap-5">
+              <div className="shadow px-4 py-2 flex items-center justify-between xl:col-span-2">
                 <div className="flex items-center gap-3">
                   <div className="bg-gray-300 rounded-md size-[60px]">
                     <img
@@ -50,36 +55,19 @@ const Profile = () => {
                     <h4>
                       {user?.firstName} {user?.lastName}
                     </h4>
-                    <p className="text-sm text-[#7d879c]">
-                      Balance: <span className="text-red-500">$5,000.00</span>
+                    <p className="uppercase text-sm text-[#7d879c] text-start">
+                      Silver User
                     </p>
                   </div>
                 </div>
-                <p className="uppercase text-sm text-[#7d879c]">Silver User</p>
               </div>
-              <div className="grid grid-cols-2 xl:grid-cols-4 gap-5">
+              <div className="">
                 <div className="shadow px-4 py-5 flex flex-col items-center">
-                  <span className="text-red-600 font-semibold text-lg">16</span>
+                  <span className="text-red-600 font-semibold text-lg">
+                    {orders.length}
+                  </span>
                   <p className="text-center text-[13px] text-[#7d879c]">
                     All Orders
-                  </p>
-                </div>
-                <div className="shadow px-4 py-2 flex flex-col items-center">
-                  <span className="text-red-600 font-semibold text-lg">02</span>
-                  <p className="text-center text-[13px] text-[#7d879c]">
-                    Awaiting Payments
-                  </p>
-                </div>
-                <div className="shadow px-4 py-2 flex flex-col items-center">
-                  <span className="text-red-600 font-semibold text-lg">00</span>
-                  <p className="text-center text-[13px] text-[#7d879c]">
-                    Awaiting Shipment
-                  </p>
-                </div>
-                <div className="shadow px-4 py-2 flex flex-col items-center">
-                  <span className="text-red-600 font-semibold text-lg">01</span>
-                  <p className="text-center text-[13px] text-[#7d879c]">
-                    Awaiting Delivery
                   </p>
                 </div>
               </div>

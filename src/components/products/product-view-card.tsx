@@ -16,8 +16,8 @@ const ProductViewCard = ({
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [qty, setQty] = useState<number>(1);
-  // manage attibutes data like color, size, etc
-  const [attibutes, setAttibutes] = useState<
+  // manage attributes data like color, size, etc
+  const [attributes, setAttributes] = useState<
     {
       [key: string]: string;
     }[]
@@ -31,23 +31,23 @@ const ProductViewCard = ({
       })
       .filter((att) => att.key !== "")
   );
-  // manage attibutes data like color, size, etc
-  const handleAttibutes = (name: string, value: string) => {
-    const isNameExist = attibutes.find((att) => att.key === name);
+  // manage attributes data like color, size, etc
+  const handleAttributes = (name: string, value: string) => {
+    const isNameExist = attributes.find((att) => att.key === name);
     if (isNameExist) {
-      setAttibutes(
-        attibutes.map((att) => (att.key === name ? { ...att, value } : att))
+      setAttributes(
+        attributes.map((att) => (att.key === name ? { ...att, value } : att))
       );
     } else {
-      setAttibutes([...attibutes, { key: name, value }]);
+      setAttributes([...attributes, { key: name, value }]);
     }
   };
-  const isAttibuteExist = (name: string, value: string) => {
-    return attibutes.find((att) => att.key === name && att.value === value);
+  const isAttributeExist = (name: string, value: string) => {
+    return attributes.find((att) => att.key === name && att.value === value);
   };
 
   const handleCart = () => {
-    const variant = attibutes.map((att) => att.value).join(">>");
+    const variant = attributes.map((att) => att.value).join(">>");
 
     const prices = product.stock?.find((stock) => stock.variant === variant);
     const cartInfo = {
@@ -58,14 +58,14 @@ const ProductViewCard = ({
       image: product.images[0],
       qty: qty,
       selected: true,
-      attributes: attibutes,
+      attributes: attributes,
     };
     addToCart(cartInfo);
     setIsModalVisible?.(false);
   };
 
   const handleBuyNow = () => {
-    const variant = attibutes.map((att) => att.value).join(">>");
+    const variant = attributes.map((att) => att.value).join(">>");
 
     const prices = product.stock?.find((stock) => stock.variant === variant);
     const cartInfo = {
@@ -76,7 +76,7 @@ const ProductViewCard = ({
       image: product.images[0],
       qty: qty,
       selected: true,
-      attributes: attibutes,
+      attributes: attributes,
     };
     addToCart(cartInfo);
     setIsModalVisible?.(false);
@@ -107,7 +107,7 @@ const ProductViewCard = ({
           </p>
         </h3>
 
-        {/* attibutes  */}
+        {/* attributes  */}
         <div className="border-b-2  pb-4 mb-6">
           {product.attributes?.map((attr: IAttribute, index: number) => {
             if (!attr.enable) return null;
@@ -117,7 +117,7 @@ const ProductViewCard = ({
                 <h4 className="mb-1 mt-3">{attr.name}: </h4>
                 <div className="flex">
                   {attr.values.map((value, index) => {
-                    const selectedAtt = isAttibuteExist(attr.name, value.title);
+                    const selectedAtt = isAttributeExist(attr.name, value.title);
 
                     return (
                       <span
@@ -128,7 +128,7 @@ const ProductViewCard = ({
                               selectedAtt?.value === value.title,
                           }
                         )}
-                        onClick={() => handleAttibutes(attr.name, value.title)}
+                        onClick={() => handleAttributes(attr.name, value.title)}
                         key={index}
                       >
                         {value.title}

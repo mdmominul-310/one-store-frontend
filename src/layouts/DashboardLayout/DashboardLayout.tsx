@@ -2,6 +2,7 @@ import Footer from "@/components/shared/footer/Footer";
 import Headers from "@/components/shared/headers/headers";
 import { Outlet } from "react-router-dom";
 import DashboardLeftSide from "./DashboardLeftSide";
+import FloatCart from "@/components/carts/float-cart";
 
 const DashboardLayout = (): JSX.Element => {
   return (
@@ -15,6 +16,7 @@ const DashboardLayout = (): JSX.Element => {
           <Outlet />
         </div>
       </div>
+      <FloatCart />
       <Footer />
     </div>
   );

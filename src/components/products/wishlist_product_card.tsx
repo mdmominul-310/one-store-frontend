@@ -3,17 +3,13 @@ import useCart from "@/hooks/useCart";
 import { ICarts } from "@/interfaces/carts.interface";
 import { useDispatch } from "react-redux";
 import { addCart, removeCart } from "@/store/features/cartSlice";
-import { removeWishList } from "@/store/features/wishListSlice";
-import { useAppSelector } from "@/store/app/hooks";
-import { useDeleteWishlistMutation } from "@/store/services/wishlistApiService";
-import UseCustomToast from "@/hooks/UseCustomToast";
+import useWishlist from "@/hooks/useWishlist";
+
 
 const WishlistProductCard = ({ products }: { products: ICarts }) => {
   const dispatch = useDispatch();
-  const wishlistProducts = useAppSelector(
-    (state) => state.local.wishlistReducer.wishListInfo
-  );
-  const [removeProduct] = useDeleteWishlistMutation();
+  const { handleRemoveFromWishlist } = useWishlist();
+
 
   const { isExist } = useCart();
 
@@ -36,24 +32,7 @@ const WishlistProductCard = ({ products }: { products: ICarts }) => {
     }
   };
 
-  const handleRemoveFromWishlist = async () => {
-    const productInfo: ICarts = {
-      id: products.id,
-      title: products?.title,
-      price: products.price,
-      image: products.image,
-      qty: 1,
-      regularPrice: products.regularPrice,
-      selected: true,
-    };
-    const isExist = wishlistProducts.find((prod) => prod.id == products.id);
-    if (isExist) {
-      dispatch(removeWishList(productInfo));
-    } else {
-      console.log(products);
-      UseCustomToast(removeProduct(products.id), "product removing");
-    }
-  };
+
 
   return (
     <>
@@ -92,7 +71,7 @@ const WishlistProductCard = ({ products }: { products: ICarts }) => {
         <div className="bg-primary absolute top-4 hidden group-hover:block right-2 p-2 rounded">
           <button
             className=" bg-primary text-white font-semibold rounded text-2xl block"
-            onClick={() => handleRemoveFromWishlist()}
+            onClick={() => handleRemoveFromWishlist(products?._id as string)}
           >
             <FaHeart className="text-secondary" />
           </button>
