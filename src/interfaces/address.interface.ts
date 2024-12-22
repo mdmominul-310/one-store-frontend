@@ -6,7 +6,7 @@ export type IAddress = {
   phoneNumber: string;
   landmark: string;
   addressLine1: string;
-  addressLine2: string;
+  addressLine2?: string;
   city: string;
   state: string;
   zipCode: string;

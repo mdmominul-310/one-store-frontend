@@ -12,6 +12,7 @@ import { MdModeEdit } from "react-icons/md";
 
 const Address = () => {
   const [isEditable, setIsEditable] = useState(false);
+
   const [editableAddress, setEditableAddress] = useState<IAddress | null>(null);
   const { data } = useGetAddressesQuery({});
   const [deleteAddress] = useDeleteAddressMutation();
@@ -34,12 +35,15 @@ const Address = () => {
           onClick={() => setIsEditable(!isEditable)}
           className="px-5 py-1 bg-[#ffe9ec] text-[#D23F57] text-sm rounded-md"
         >
-          Add Address
+          {isEditable ? "Show" : "Add"} Address
         </button>
       </div>
       {isEditable ? (
         <div className="shadow px-4 py-5 rounded-sm mt-5">
-          <EditAddress address={editableAddress} />
+          <EditAddress
+            address={editableAddress}
+            setIsEditable={setIsEditable}
+          />
         </div>
       ) : (
         <>
@@ -48,16 +52,17 @@ const Address = () => {
               {addresses?.map((address, idx) => (
                 <div
                   key={idx}
-                  className="grid grid-cols-5 items-center justify-between gap-5 shadow px-4 py-5 rounded-sm"
+                  className={`grid grid-cols-5 items-center justify-between gap-5 shadow px-4 py-5 rounded-sm ${
+                    address.isDefault ? "bg-blue-100" : ""
+                  }`}
                 >
+                  <div className="">{address?.addressType}</div>
                   <div className="">{address?.city}</div>
 
-                  <span className="text-sm text-center col-span-2">
+                  <span className="text-sm text-center">
                     {address?.zipCode}
                   </span>
-                  <span className="text-sm text-end">
-                    {address?.addressLine1}
-                  </span>
+                  <span className="text-sm text-end">{address?.landmark}</span>
                   <span className="text-[#7d879c] text-end  flex items-center justify-end gap-3">
                     <MdModeEdit
                       onClick={() => {

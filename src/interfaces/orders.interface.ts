@@ -17,6 +17,7 @@ export type IOrders = {
   deliveryArea: string;
   deliveryCharge?: string;
   note?: string;
+  user?: string;
   products: ICarts[];
   status?: string;
   total: string;

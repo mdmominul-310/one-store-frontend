@@ -7,6 +7,7 @@ import {
 } from "@/store/services/addressApiService";
 import type { FormProps } from "antd";
 import { Form, Input, Select } from "antd";
+import React, { useEffect } from "react";
 
 type AddressType = "Home" | "Work" | "Office" | "Other";
 
@@ -16,7 +17,7 @@ type FieldType = {
   phoneNumber: string;
   landmark: string;
   addressLine1: string;
-  addressLine2: string;
+  addressLine2?: string;
   city: string;
   state: string;
   zipCode: string;
@@ -25,10 +26,14 @@ type FieldType = {
   isDefault: boolean;
 };
 
-const EditAddress: React.FC<{ address: IAddress | null }> = ({ address }) => {
+const EditAddress: React.FC<{
+  address: IAddress | null;
+  setIsEditable: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ address, setIsEditable }) => {
   const { user } = useAuth();
-  const [addAddress] = useAddAddressMutation();
-  const [updateAddress] = useUpdateAddressMutation();
+  const [addAddress, { isSuccess }] = useAddAddressMutation();
+  const [updateAddress, { isSuccess: updateSuccess }] =
+    useUpdateAddressMutation();
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     values.phoneNumber = "+880" + values.phoneNumber;
     const addressInfo: IAddress = {
@@ -65,6 +70,12 @@ const EditAddress: React.FC<{ address: IAddress | null }> = ({ address }) => {
   ) => {
     console.log("Failed:", errorInfo);
   };
+
+  useEffect(() => {
+    if (isSuccess || updateSuccess) {
+      setIsEditable(false);
+    }
+  }, [isSuccess, setIsEditable, updateSuccess]);
 
   return (
     <div>
@@ -115,14 +126,14 @@ const EditAddress: React.FC<{ address: IAddress | null }> = ({ address }) => {
               { required: true, message: "Please input your number" },
               {
                 pattern: /^[0-9]*$/,
-                message: "values can't be negative",
+                message: "add valid phone number",
                 len: 10,
               },
             ]}
           >
             <Input
               prefix={"+880"}
-              placeholder="01723344556"
+              placeholder="1723344556"
               type="number"
               className="h-11"
               onKeyDown={(e) => {
@@ -224,12 +235,7 @@ const EditAddress: React.FC<{ address: IAddress | null }> = ({ address }) => {
             label="AddressLine 2"
             name="addressLine2"
             className="w-full mb-0"
-            rules={[
-              {
-                required: true,
-                message: "Please input addressLine 2",
-              },
-            ]}
+
           >
             <Input className="w-full h-11" placeholder="addressLine 2" />
           </Form.Item>
