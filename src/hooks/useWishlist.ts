@@ -42,27 +42,27 @@ const useWishlist = () => {
 
   const isWishlistExist = (id: string) => {
     return (
-      localWishlistProducts.find((prod) => prod.id == id) ||
+      localWishlistProducts.find((prod) => prod?.id == id) ||
       storedWishlistProducts.find(
-        (prod: { _id: string; product: IProducts }) => prod.product.id == id
+        (prod: { _id: string; product: IProducts }) => prod.product?.id == id
       )
     );
   };
 
   const handleRemoveFromWishlist = async (id: string) => {
-    const isExist = localWishlistProducts.find((prod) => prod.id == id);
+    const isExist = localWishlistProducts.find((prod) => prod?.id == id);
     const isWishlist = isWishlistExist(id as string);
     if (isExist) {
-      dispatch(removeWishList({ id: isExist.id }));
+      dispatch(removeWishList({ id: isExist?.id }));
       toast.success("Removed from wishlist");
     } else {
-      UseCustomToast(removeWishlistProduct(isWishlist._id), "product removing");
+      UseCustomToast(removeWishlistProduct(isWishlist?._id), "product removing");
     }
   };
 
   const handleAddToWishList = async (product: IProducts) => {
     if (user?.email) {
-      const data = { product: product?.id, user: user.id };
+      const data = { product: product?.id, user: user?.id };
       UseCustomToast(addToWishList(data), "product adding to wishlist");
     } else {
       const wishlistInfo: ICarts = {

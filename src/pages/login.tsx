@@ -1,11 +1,12 @@
+import UseCustomToast from "@/hooks/UseCustomToast";
 import { addUser } from "@/store/features/userSlice";
 import { useLoginUserMutation } from "@/store/services/authApiService";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Form, FormProps, Input } from "antd";
-import toast from "react-hot-toast";
+import { useEffect } from "react";
 import { ImSpinner2 } from "react-icons/im";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 type FieldType = {
   email: string;
@@ -13,20 +14,30 @@ type FieldType = {
 };
 
 const Login = () => {
-  const [loginUser, { isLoading }] = useLoginUserMutation();
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
+  const searchParams = new URLSearchParams(location.search);
+  const redirectUrl = searchParams.get("redirect");
+  const [loginUser, { isLoading, isSuccess, data }] = useLoginUserMutation();
+
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    const result = await loginUser(values);
-    if (result?.data?.success) {
-      dispatch(addUser(result?.data?.data));
-      toast.success(result?.data?.message);
-      navigate("/");
-    } else {
-      toast.error("Failed to login user");
-    }
+    UseCustomToast(loginUser(values), "Logging in");
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (data?.data) {
+        dispatch(addUser(data.data));
+      }
+      if (redirectUrl) {
+        navigate(`/${redirectUrl}`);
+      } else {
+        navigate("/");
+      }
+    }
+  }, [data?.data, dispatch, isSuccess, navigate, redirectUrl]);
 
   return (
     <div className="container py-10 flex justify-center items-center">

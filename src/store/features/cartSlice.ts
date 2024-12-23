@@ -13,10 +13,10 @@ const cartInfoSlice = createSlice({
   reducers: {
     addCart: (state, action) => {
       const cart = action.payload;
-      const exist = state?.cartInfo?.find((x) => x.id === cart.id);
+      const exist = state?.cartInfo?.find((x) => x?.id === cart?.id);
       if (exist) {
         state.cartInfo = state.cartInfo.map((x) =>
-          x.id === exist.id ? cart : x
+          x?.id === exist?.id ? cart : x
         );
       } else {
         if (state.cartInfo.length === 0) {
@@ -29,38 +29,38 @@ const cartInfoSlice = createSlice({
     },
     removeCart: (state, action) => {
       const cart = action.payload;
-      state.cartInfo = state.cartInfo.filter((x) => x.id !== cart.id);
+      state.cartInfo = state.cartInfo.filter((x) => x?.id !== cart?.id);
     },
     clearCart: (state) => {
       state.cartInfo = [];
     },
     addCartQuantity: (state, action) => {
       const cart = action.payload;
-      const exist = state.cartInfo.find((x) => x.id === cart.id);
+      const exist = state.cartInfo.find((x) => x?.id === cart?.id);
       if (exist) {
         exist.qty += 1;
         state.cartInfo = state.cartInfo.map((x) =>
-          x.id === cart.id ? exist : x
+          x?.id === cart?.id ? exist : x
         );
       }
     },
     subtractQuantity: (state, action) => {
       const cart = action.payload;
-      const exist = state.cartInfo.find((x) => x.id === cart.id);
+      const exist = state.cartInfo.find((x) => x?.id === cart?.id);
       if (exist) {
         exist.qty > 1 ? (exist.qty -= 1) : (exist.qty = 1);
         state.cartInfo = state.cartInfo.map((x) =>
-          x.id === cart.id ? exist : x
+          x?.id === cart?.id ? exist : x
         );
       }
     },
     addSelectedCart: (state, action) => {
       const cart = action.payload;
-      const exist = state.cartInfo.find((x) => x.id === cart.id);
+      const exist = state.cartInfo.find((x) => x?.id === cart?.id);
       if (exist) {
         exist.selected = !exist.selected;
         state.cartInfo = state.cartInfo.map((x) =>
-          x.id === cart.id ? exist : x
+          x?.id === cart?.id ? exist : x
         );
       }
     },

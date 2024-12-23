@@ -1,12 +1,14 @@
 import useAuth from "@/hooks/useAuth";
 import UseCustomToast from "@/hooks/UseCustomToast";
-import { UserUpdateSuccessResponse } from "@/interfaces/api-response.interface";
 import { IProfile } from "@/interfaces/profile.interface";
 import { updateUser } from "@/store/features/userSlice";
 
 import { useUpdateUserMutation } from "@/store/services/authApiService";
+import { useUploadImageMutation } from "@/store/services/uploadApiSlice";
 import type { FormProps } from "antd";
 import { Form, Input } from "antd";
+import React, { useEffect } from "react";
+import toast from "react-hot-toast";
 import { FaUser } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
@@ -21,7 +23,9 @@ type FieldType = {
 const EditProfile = () => {
   const { user } = useAuth();
   const dispatch = useDispatch();
-  const [updateProfile] = useUpdateUserMutation();
+  const [uploadFile, { isSuccess: uploadSuccess, data: uploadData }] =
+    useUploadImageMutation();
+  const [updateProfile, { data, isSuccess }] = useUpdateUserMutation();
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const profileInfo: IProfile = {
       firstName: values.firstName as string,
@@ -30,39 +34,7 @@ const EditProfile = () => {
       phoneNumber: values.phoneNumber as string,
       dateOfBirth: values.dateOfBirth as string,
     };
-    UseCustomToast(updateProfile(profileInfo), "Updating Profile").then(
-      (result: UserUpdateSuccessResponse) => {
-        if (result.data) {
-          const {
-            _id,
-            firstName,
-            lastName,
-            phone,
-            phoneNumberVerified,
-            email,
-            emailVerified,
-            profileImage,
-            role,
-            status,
-            id,
-          } = result?.data?.data || {};
-          const userData = {
-            _id,
-            firstName,
-            lastName,
-            phone,
-            phoneNumberVerified,
-            email,
-            emailVerified,
-            profileImage,
-            role,
-            status,
-            id,
-          };
-          dispatch(updateUser(userData));
-        }
-      }
-    );
+    UseCustomToast(updateProfile(profileInfo), "Updating Profile");
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
@@ -70,13 +42,53 @@ const EditProfile = () => {
   ) => {
     console.log("Failed:", errorInfo);
   };
-  
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; // Safely access the first file
+    if (file) {
+      const isImage = file.type.startsWith("image/");
+      const isUnder2MB = file.size <= 2 * 1024 * 1024; // 2 MB in bytes
+
+      if (!isImage) {
+        toast.error("Please upload a valid image file.");
+        event.target.value = ""; // Clear the input
+        return;
+      }
+
+      if (!isUnder2MB) {
+        toast.error("File size must be 2 MB or less.");
+        event.target.value = ""; // Clear the input
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("files", file);
+      UseCustomToast(uploadFile(formData), "Uploading Image");
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      const userData = data.data;
+      dispatch(updateUser(userData));
+    }
+  }, [isSuccess, data, dispatch]);
+
   return (
     <div>
       <div className="py-3">
-        <div className="size-16 border rounded-full flex justify-center items-center text-3xl bg-slate-100 text-slate-500">
-          <FaUser />
-        </div>
+        <label htmlFor="profile_input">
+          <div className="size-16 border rounded-full flex justify-center items-center text-3xl bg-slate-100 text-slate-500">
+            <FaUser />
+          </div>
+          <input
+            type="file"
+            id="profile_input"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ display: "none" }} // Optional: hide the input element
+          />
+        </label>
       </div>
 
       <Form

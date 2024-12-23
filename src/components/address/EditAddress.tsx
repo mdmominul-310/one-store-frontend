@@ -8,6 +8,7 @@ import {
 import type { FormProps } from "antd";
 import { Form, Input, Select } from "antd";
 import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type AddressType = "Home" | "Work" | "Office" | "Other";
 
@@ -30,6 +31,10 @@ const EditAddress: React.FC<{
   address: IAddress | null;
   setIsEditable: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ address, setIsEditable }) => {
+  const location = useLocation();
+  const navigate = useNavigate()
+  const searchParams = new URLSearchParams(location.search);
+  const redirectUrl = searchParams.get("redirect");
   const { user } = useAuth();
   const [addAddress, { isSuccess }] = useAddAddressMutation();
   const [updateAddress, { isSuccess: updateSuccess }] =
@@ -74,8 +79,11 @@ const EditAddress: React.FC<{
   useEffect(() => {
     if (isSuccess || updateSuccess) {
       setIsEditable(false);
+      if (redirectUrl){
+        navigate(`/${redirectUrl}`)
+      }
     }
-  }, [isSuccess, setIsEditable, updateSuccess]);
+  }, [isSuccess, navigate, redirectUrl, setIsEditable, updateSuccess]);
 
   return (
     <div>
@@ -235,7 +243,6 @@ const EditAddress: React.FC<{
             label="AddressLine 2"
             name="addressLine2"
             className="w-full mb-0"
-
           >
             <Input className="w-full h-11" placeholder="addressLine 2" />
           </Form.Item>
