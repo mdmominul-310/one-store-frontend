@@ -10,6 +10,7 @@ import { Form, Input } from "antd";
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 import { FaUser } from "react-icons/fa";
+import { ImSpinner10 } from "react-icons/im";
 import { useDispatch } from "react-redux";
 
 type FieldType = {
@@ -23,7 +24,7 @@ type FieldType = {
 const EditProfile = () => {
   const { user } = useAuth();
   const dispatch = useDispatch();
-  const [uploadFile, { isSuccess: uploadSuccess, data: uploadData }] =
+  const [uploadFile, { data: uploadData, isLoading }] =
     useUploadImageMutation();
   const [updateProfile, { data, isSuccess }] = useUpdateUserMutation();
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
@@ -32,6 +33,7 @@ const EditProfile = () => {
       lastName: values.lastName as string,
       email: values.email as string,
       phoneNumber: values.phoneNumber as string,
+      profileImage: uploadData?.data?.[0] || user.profileImage,
       dateOfBirth: values.dateOfBirth as string,
     };
     UseCustomToast(updateProfile(profileInfo), "Updating Profile");
@@ -77,18 +79,32 @@ const EditProfile = () => {
   return (
     <div>
       <div className="py-3">
-        <label htmlFor="profile_input">
-          <div className="size-16 border rounded-full flex justify-center items-center text-3xl bg-slate-100 text-slate-500">
-            <FaUser />
-          </div>
-          <input
-            type="file"
-            id="profile_input"
-            accept="image/*"
-            onChange={handleFileChange}
-            style={{ display: "none" }} // Optional: hide the input element
-          />
-        </label>
+        <div className="rounded-full border size-16 overflow-hidden">
+          {isLoading ? (
+            <span className="flex items-center justify-center size-full">
+              <ImSpinner10 className="size-14 text-primary animate-spin" />
+            </span>
+          ) : (
+            <label
+              htmlFor="profile_input"
+              className="size-16 h-16 w-16 rounded-full flex justify-center items-center text-3xl bg-slate-100 text-slate-500 cursor-pointer"
+            >
+              {uploadData?.data?.[0] || user.profileImage ? (
+                <img src={uploadData?.data?.[0] || user.profileImage} alt="" />
+              ) : (
+                <FaUser />
+              )}
+
+              <input
+                type="file"
+                id="profile_input"
+                accept="image/*"
+                onChange={handleFileChange}
+                style={{ display: "none" }} // Optional: hide the input element
+              />
+            </label>
+          )}
+        </div>
       </div>
 
       <Form

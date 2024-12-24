@@ -44,9 +44,9 @@ const Profile = () => {
             <div className="my-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-3 gap-5">
               <div className="shadow px-4 py-2 flex items-center justify-between xl:col-span-2">
                 <div className="flex items-center gap-3">
-                  <div className="bg-gray-300 rounded-md size-[60px]">
+                  <div className="bg-gray-300 rounded-full size-[60px]">
                     <img
-                      className="size-[60px] rounded-full"
+                      className="size-[60px] rounded-full object-cover"
                       src={user?.profileImage}
                       alt=""
                     />
