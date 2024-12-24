@@ -15,6 +15,7 @@ import Profile from "@/pages/profile";
 import Login from "@/pages/login";
 import Register from "@/pages/register";
 import PrivateRoute from "./PrivateRoute";
+import OrderDetails from "@/pages/order-details";
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/orders",
         element: <Orders />,
+      },
+      {
+        path: "/dashboard/orders/:id",
+        element: <OrderDetails />,
       },
       {
         path: "/dashboard/wishlist",

@@ -18,7 +18,7 @@ export const size = baseApi.injectEndpoints({
     }),
     updateSize: builder.mutation({
       query: (size) => ({
-        url: `/sizes/${size.id}`,
+        url: `/sizes/${size?.id}`,
         method: "PATCH",
         body: size,
       }),

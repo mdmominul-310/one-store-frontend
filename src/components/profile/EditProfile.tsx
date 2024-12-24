@@ -1,13 +1,16 @@
 import useAuth from "@/hooks/useAuth";
 import UseCustomToast from "@/hooks/UseCustomToast";
-import { UserUpdateSuccessResponse } from "@/interfaces/api-response.interface";
 import { IProfile } from "@/interfaces/profile.interface";
 import { updateUser } from "@/store/features/userSlice";
 
 import { useUpdateUserMutation } from "@/store/services/authApiService";
+import { useUploadImageMutation } from "@/store/services/uploadApiSlice";
 import type { FormProps } from "antd";
 import { Form, Input } from "antd";
+import React, { useEffect } from "react";
+import toast from "react-hot-toast";
 import { FaUser } from "react-icons/fa";
+import { ImSpinner10 } from "react-icons/im";
 import { useDispatch } from "react-redux";
 
 type FieldType = {
@@ -21,48 +24,19 @@ type FieldType = {
 const EditProfile = () => {
   const { user } = useAuth();
   const dispatch = useDispatch();
-  const [updateProfile] = useUpdateUserMutation();
+  const [uploadFile, { data: uploadData, isLoading }] =
+    useUploadImageMutation();
+  const [updateProfile, { data, isSuccess }] = useUpdateUserMutation();
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const profileInfo: IProfile = {
       firstName: values.firstName as string,
       lastName: values.lastName as string,
       email: values.email as string,
       phoneNumber: values.phoneNumber as string,
+      profileImage: uploadData?.data?.[0] || user.profileImage,
       dateOfBirth: values.dateOfBirth as string,
     };
-    UseCustomToast(updateProfile(profileInfo), "Updating Profile").then(
-      (result: UserUpdateSuccessResponse) => {
-        if (result.data) {
-          const {
-            _id,
-            firstName,
-            lastName,
-            phone,
-            phoneNumberVerified,
-            email,
-            emailVerified,
-            profileImage,
-            role,
-            status,
-            id,
-          } = result?.data?.data || {};
-          const userData = {
-            _id,
-            firstName,
-            lastName,
-            phone,
-            phoneNumberVerified,
-            email,
-            emailVerified,
-            profileImage,
-            role,
-            status,
-            id,
-          };
-          dispatch(updateUser(userData));
-        }
-      }
-    );
+    UseCustomToast(updateProfile(profileInfo), "Updating Profile");
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
@@ -70,12 +44,66 @@ const EditProfile = () => {
   ) => {
     console.log("Failed:", errorInfo);
   };
-  
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; // Safely access the first file
+    if (file) {
+      const isImage = file.type.startsWith("image/");
+      const isUnder2MB = file.size <= 2 * 1024 * 1024; // 2 MB in bytes
+
+      if (!isImage) {
+        toast.error("Please upload a valid image file.");
+        event.target.value = ""; // Clear the input
+        return;
+      }
+
+      if (!isUnder2MB) {
+        toast.error("File size must be 2 MB or less.");
+        event.target.value = ""; // Clear the input
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("files", file);
+      UseCustomToast(uploadFile(formData), "Uploading Image");
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      const userData = data.data;
+      dispatch(updateUser(userData));
+    }
+  }, [isSuccess, data, dispatch]);
+
   return (
     <div>
       <div className="py-3">
-        <div className="size-16 border rounded-full flex justify-center items-center text-3xl bg-slate-100 text-slate-500">
-          <FaUser />
+        <div className="rounded-full border size-16 overflow-hidden">
+          {isLoading ? (
+            <span className="flex items-center justify-center size-full">
+              <ImSpinner10 className="size-14 text-primary animate-spin" />
+            </span>
+          ) : (
+            <label
+              htmlFor="profile_input"
+              className="size-16 h-16 w-16 rounded-full flex justify-center items-center text-3xl bg-slate-100 text-slate-500 cursor-pointer"
+            >
+              {uploadData?.data?.[0] || user.profileImage ? (
+                <img src={uploadData?.data?.[0] || user.profileImage} alt="" />
+              ) : (
+                <FaUser />
+              )}
+
+              <input
+                type="file"
+                id="profile_input"
+                accept="image/*"
+                onChange={handleFileChange}
+                style={{ display: "none" }} // Optional: hide the input element
+              />
+            </label>
+          )}
         </div>
       </div>
 

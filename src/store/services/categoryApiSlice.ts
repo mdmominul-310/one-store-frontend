@@ -19,7 +19,7 @@ export const category = baseApi.injectEndpoints({
     }),
     updateCategory: builder.mutation({
       query: (category) => ({
-        url: `/categories/${category.id}`,
+        url: `/categories/${category?.id}`,
         method: "PATCH",
         body: category,
       }),

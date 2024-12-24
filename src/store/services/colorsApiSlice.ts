@@ -18,7 +18,7 @@ export const color = baseApi.injectEndpoints({
     }),
     updateColor: builder.mutation({
       query: (color) => ({
-        url: `/colors/${color.id}`,
+        url: `/colors/${color?.id}`,
         method: "PATCH",
         body: color,
       }),

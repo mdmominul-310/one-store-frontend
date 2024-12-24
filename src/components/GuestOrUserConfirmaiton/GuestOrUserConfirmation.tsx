@@ -11,11 +11,10 @@ const GuestOrUserConfirmation: React.FC = () => {
 
   const handleOk = () => {
     setIsModalOpen(false);
-    navigate("/login");
+    navigate("/login?redirect=checkout");
   };
 
   const handleCancel = () => {
-    console.log("hello")
     dispatch(updateConfirmationStatus());
     setIsModalOpen(false);
   };
@@ -27,8 +26,8 @@ const GuestOrUserConfirmation: React.FC = () => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        okText="As User"
-        cancelText="As Guest"
+        okText="As a Login User"
+        cancelText="As a Guest"
         okButtonProps={{
           style: {
             backgroundColor: "#1890ff",
@@ -37,7 +36,7 @@ const GuestOrUserConfirmation: React.FC = () => {
           },
         }}
       >
-        <div className="py-5"></div>
+        <div className="py-2"></div>
       </Modal>
     </>
   );

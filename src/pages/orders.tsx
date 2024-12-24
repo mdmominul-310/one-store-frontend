@@ -3,6 +3,7 @@ import { IOrders } from "@/interfaces/orders.interface";
 import { useGetUserOrdersQuery } from "@/store/services/orderApiSlice";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { HiShoppingBag } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 const Orders = () => {
   const { user } = useAuth();
@@ -21,36 +22,38 @@ const Orders = () => {
       </div>
       {orders?.length ? (
         <div className="grid grid-cols-1 gap-5 py-5">
-          {orders?.map((order => {
-            return (order.products.map((ord, idx) =>      <div
-            key={idx}
-            className="grid grid-cols-6 items-center justify-between gap-5 shadow px-4 py-5 rounded-sm"
-          >
-            <div className="col-span-2">#{ord.id}</div>
-            <div className="flex  justify-between ">
-              <span
-                className={`text-[13px] capitalize px-3 pb-0.5 rounded-full mx-auto ${
-                  ord?.status === "pending"
-                    ? "bg-slate-200 text-slate-700"
-                    : ord?.status === "processing"
-                    ? "bg-blue-500 text-white"
-                    : ord?.status === "cancelled"
-                    ? "bg-red-500 text-white"
-                    : ord?.status === "delivered"
-                    ? "bg-green-100 text-green-500"
-                    : ""
-                }`}
+          {orders?.map((order) => {
+            return order.products.map((ord, idx) => (
+              <Link to={`/dashboard/orders/${order.id}`}
+                key={idx}
+                className="grid grid-cols-5 items-center justify-between gap-5 shadow px-4 py-5 rounded-sm"
               >
-                {ord.status}
-              </span>
-            </div>
-            <span className="text-sm text-center">{ord.regularPrice}</span>
-            <span className="text-sm text-center">${ord.price}</span>
-            <span className="text-[#7d879c] text-end  flex items-center justify-end">
-              <FaArrowRightLong />
-            </span>
-          </div>))
-          }))}
+                <div className=" text-start">#{order?.id}</div>
+                <div className="flex  justify-between ">
+                  <span
+                    className={`text-[13px] capitalize px-3 pb-0.5 rounded-full mx-auto ${
+                      ord?.status === "pending"
+                        ? "bg-slate-200 text-slate-700"
+                        : ord?.status === "processing"
+                        ? "bg-blue-500 text-white"
+                        : ord?.status === "cancelled"
+                        ? "bg-red-500 text-white"
+                        : ord?.status === "delivered"
+                        ? "bg-green-100 text-green-500"
+                        : ""
+                    }`}
+                  >
+                    {ord.status}
+                  </span>
+                </div>
+                <span className="text-sm text-center">{ord.regularPrice}</span>
+                <span className="text-sm text-center">${ord.price}</span>
+                <span className="text-[#7d879c] text-end  flex items-center justify-end">
+                  <FaArrowRightLong />
+                </span>
+              </Link>
+            ));
+          })}
         </div>
       ) : (
         <div className="flex items-center justify-center text-lg font-medium py-20">

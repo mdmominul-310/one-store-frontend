@@ -126,7 +126,7 @@ const CheckoutPage = () => {
               {user.email ? (
                 <div>
                   <Link
-                    to={"/"}
+                    to={"/dashboard/address?redirect=checkout"}
                     className="my-5 pb-2 text-right text-primary cursor-pointer block"
                   >
                     Add Address +
