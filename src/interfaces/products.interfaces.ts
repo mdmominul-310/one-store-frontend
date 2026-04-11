@@ -39,3 +39,14 @@ export interface IProducts {
     label: string;
   }[];
 }
+
+export type IOrderProduct = {
+  id: string;
+  title: string;
+  price: number;
+  regularPrice: number;
+  image: string;
+  qty: number;
+  attributes: { key: string; value: string; _id: string }[];
+  _id: string;
+};

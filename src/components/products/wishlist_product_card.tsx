@@ -17,12 +17,12 @@ const WishlistProductCard = ({ products }: { products: ICarts }) => {
 
   const handleAddToCart = () => {
     const cartInfo: ICarts = {
-      id: products.id,
+      id: products?.id,
       title: products?.title,
-      price: products.price,
-      image: products.image,
+      price: products?.price,
+      image: products?.image,
       qty: 1,
-      regularPrice: products.regularPrice,
+      regularPrice: products?.regularPrice,
       selected: true,
     };
     if (isCart) {

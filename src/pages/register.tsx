@@ -7,6 +7,8 @@ import { ImSpinner2 } from "react-icons/im";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { addUser } from "@/store/features/userSlice";
+import UseCustomToast from "@/hooks/UseCustomToast";
+import { useEffect } from "react";
 
 type FieldType = {
   firstName: string;
@@ -17,12 +19,13 @@ type FieldType = {
 };
 
 const Register = () => {
-  const [createUser, { isLoading }] = useCreateUserMutation();
+  const [createUser, { isLoading, data, isSuccess }] = useCreateUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     values.phone = "+880" + values.phone;
+    UseCustomToast(createUser(values), "Registering");
 
     const result = await createUser(values);
     if (result?.data?.success) {
@@ -33,6 +36,15 @@ const Register = () => {
       toast.error("Failed to register user");
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (data?.data) {
+        dispatch(addUser(data.data));
+      }
+      navigate("/");
+    }
+  }, [data.data, dispatch, isSuccess, navigate]);
 
   return (
     <div className="container py-10 flex justify-center items-center">

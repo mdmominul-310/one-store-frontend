@@ -13,10 +13,10 @@ const wishListInfoSlice = createSlice({
   reducers: {
     addWishList: (state, action) => {
       const WishList = action.payload;
-      const exist = state?.wishListInfo?.find((x) => x.id === WishList.id);
+      const exist = state?.wishListInfo?.find((x) => x?.id === WishList?.id);
       if (exist) {
         state.wishListInfo = state.wishListInfo.map((x) =>
-          x.id === exist.id ? WishList : x
+          x?.id === exist?.id ? WishList : x
         );
       } else {
         if (state.wishListInfo.length === 0) {
@@ -30,7 +30,7 @@ const wishListInfoSlice = createSlice({
     removeWishList: (state, action) => {
       const WishList = action.payload;
       state.wishListInfo = state.wishListInfo.filter(
-        (x) => x.id !== WishList.id
+        (x) => x?.id !== WishList?.id
       );
     },
     clearWishList: (state) => {
@@ -38,31 +38,31 @@ const wishListInfoSlice = createSlice({
     },
     addWishListQuantity: (state, action) => {
       const WishList = action.payload;
-      const exist = state.wishListInfo.find((x) => x.id === WishList.id);
+      const exist = state.wishListInfo.find((x) => x?.id === WishList?.id);
       if (exist) {
         exist.qty += 1;
         state.wishListInfo = state.wishListInfo.map((x) =>
-          x.id === WishList.id ? exist : x
+          x?.id === WishList?.id ? exist : x
         );
       }
     },
     subtractQuantity: (state, action) => {
       const WishList = action.payload;
-      const exist = state.wishListInfo.find((x) => x.id === WishList.id);
+      const exist = state.wishListInfo.find((x) => x?.id === WishList?.id);
       if (exist) {
         exist.qty > 1 ? (exist.qty -= 1) : (exist.qty = 1);
         state.wishListInfo = state.wishListInfo.map((x) =>
-          x.id === WishList.id ? exist : x
+          x?.id === WishList?.id ? exist : x
         );
       }
     },
     addSelectedWishList: (state, action) => {
       const WishList = action.payload;
-      const exist = state.wishListInfo.find((x) => x.id === WishList.id);
+      const exist = state.wishListInfo.find((x) => x?.id === WishList?.id);
       if (exist) {
         exist.selected = !exist.selected;
         state.wishListInfo = state.wishListInfo.map((x) =>
-          x.id === WishList.id ? exist : x
+          x?.id === WishList?.id ? exist : x
         );
       }
     },

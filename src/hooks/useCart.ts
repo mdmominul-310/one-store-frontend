@@ -32,7 +32,7 @@ const useCart = () => {
   };
 
   const isExist = (id: string) => {
-    return cart.some((item) => item.id === id);
+    return cart.some((item) => item?.id === id);
   };
 
   const addQuantity = (id: string) => {
@@ -70,11 +70,11 @@ const useCart = () => {
   const totalSelectedItems = cart
     .filter((item) => item.selected === true)
     .reduce((acc, item) => acc + item.qty, 0);
-  const isSelectedAll = cart.every((item) => item.selected === true);
+  const isSelectedAll = cart.every((item) => item?.selected === true);
   const isSelected = (id: string) => {
-    return cart.some((item) => item.id === id && item.selected === true);
+    return cart.some((item) => item?.id === id && item?.selected === true);
   };
-  const selectedItems = cart.filter((item) => item.selected === true);
+  const selectedItems = cart.filter((item) => item?.selected === true);
 
   useEffect(() => {
     setCart(cartItems);

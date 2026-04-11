@@ -14,6 +14,9 @@ const order = baseApi.injectEndpoints({
     getSingleOrder: builder.query({
       query: (id) => `/orders/${id}`,
     }),
+    getSingleOrderByOrderId: builder.query({
+      query: (id) => `/orders/?id=${id}`,
+    }),
     addOrder: builder.mutation({
       query: (order) => ({
         url: `/orders`,
@@ -24,7 +27,7 @@ const order = baseApi.injectEndpoints({
     }),
     updateOrder: builder.mutation({
       query: (order) => ({
-        url: `/orders/${order.id}`,
+        url: `/orders/${order?.id}`,
         method: "PATCH",
         body: order,
       }),
@@ -47,4 +50,5 @@ export const {
   useDeleteOrderMutation,
   useGetSingleOrderQuery,
   useUpdateOrderMutation,
+  useGetSingleOrderByOrderIdQuery
 } = order;

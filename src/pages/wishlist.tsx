@@ -12,7 +12,7 @@ const Wishlist = () => {
         <div className=" w-full grid lg:grid-cols-3 grid-cols-2 gap-4 ">
           {[...localWishlistProducts, ...modifiedStoredWishlistProducts]?.map(
             (product: ICarts) => (
-              <WishlistProductCard key={product.id} products={product} />
+              <WishlistProductCard key={product?.id} products={product} />
             )
           )}
         </div>
